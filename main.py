@@ -42,7 +42,7 @@ def process_message(text):
     text = str(text)
     text = URL_RE.sub(r'[\1](\1)', text)
     text = re.sub(r'@(\w+)', r'[@\1](/user/\1)', text)
-    html = markdown2.markdown(text, extras=['strike'])
+    html = markdown2.markdown(text, extras=['strike'], safe_mode='escape')
     return Markup(html)
 
 
@@ -91,8 +91,7 @@ def root(request: Request, page: int = Query(1, ge=1)):
     con = get_db()
     cur = con.cursor()
     cur.execute('''
-        SELECT m.id, m.message, m.created_at, m.edited_at, u.username, u.age,
-               (SELECT count(*) FROM messages r WHERE r.reply_to = m.id) as reply_count
+        SELECT m.id, m.message, m.created_at, m.edited_at, u.username, u.age
         FROM messages m JOIN users u ON m.sender_id = u.id
         WHERE m.reply_to IS NULL
         ORDER BY m.created_at DESC
@@ -138,8 +137,7 @@ def search(request: Request, q: str = Query(''), page: int = Query(1, ge=1)):
         con = get_db()
         cur = con.cursor()
         cur.execute('''
-            SELECT m.id, m.message, m.created_at, m.edited_at, u.username, u.age,
-                   (SELECT count(*) FROM messages r WHERE r.reply_to = m.id) as reply_count
+            SELECT m.id, m.message, m.created_at, m.edited_at, u.username, u.age
             FROM messages m JOIN users u ON m.sender_id = u.id
             WHERE m.message LIKE ? OR u.username LIKE ?
             ORDER BY m.created_at DESC
@@ -212,9 +210,14 @@ def create_message_submit(request: Request, message: str = Form(...)):
     cur = con.cursor()
     cur.execute('SELECT id FROM users WHERE username = ?', [username])
     row = cur.fetchone()
-    if row:
-        cur.execute('INSERT INTO messages (sender_id, message) VALUES (?, ?)', [row['id'], message])
-        con.commit()
+    if not row:
+        con.close()
+        return render(request, 'create_message.html', {
+            'username': username, 'posted': False,
+            'error': 'User not found.',
+        })
+    cur.execute('INSERT INTO messages (sender_id, message) VALUES (?, ?)', [row['id'], message])
+    con.commit()
     con.close()
     return RedirectResponse(url='/', status_code=303)
 
@@ -441,8 +444,7 @@ def user_profile(request: Request, profile_username: str, page: int = Query(1, g
         })
     profile = dict(profile)
     cur.execute('''
-        SELECT m.id, m.message, m.created_at, m.edited_at, u.username, u.age,
-               (SELECT count(*) FROM messages r WHERE r.reply_to = m.id) as reply_count
+        SELECT m.id, m.message, m.created_at, m.edited_at, u.username, u.age
         FROM messages m JOIN users u ON m.sender_id = u.id
         WHERE u.username = ? AND m.reply_to IS NULL
         ORDER BY m.created_at DESC

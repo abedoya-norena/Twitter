@@ -40,7 +40,7 @@
               <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('{{ t.confirm_delete_msg }}')">{{ t.btn_delete }}</button>
             </form>
             {% endif %}
-            <a href="/message/{{ msg.id }}" class="btn btn-sm btn-reply">{{ t.btn_reply }}{% if msg.reply_count %} · {{ msg.reply_count }} {{ t.replies_label }}{% endif %}</a>
+            <a href="/message/{{ msg.id }}" class="btn btn-sm btn-reply">{{ t.btn_reply }}</a>
           </div>
         </div>
       </div>
