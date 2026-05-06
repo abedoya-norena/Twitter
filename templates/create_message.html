@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>// new tweet</h2>
+
+{% if not username %}
+<div class="alert alert-error">You must be <a href="/login" style="color:var(--cyan)">logged in</a> to tweet.</div>
+{% else %}
+
+{% if posted %}
+<div class="alert alert-success">&#10003; Signal transmitted successfully.</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<div class="form-box">
+  <form method="post" action="/create_message">
+    <div class="form-group">
+      <label for="message">What's firing in your neurons?</label>
+      <textarea id="message" name="message" placeholder="Share a thought..." required></textarea>
+    </div>
+    <button type="submit" class="btn">Transmit</button>
+  </form>
+</div>
+
+{% endif %}
+
+{% endblock %}

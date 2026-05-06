@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>// login</h2>
+
+{% if tried %}
+  {% if success %}
+  <div class="alert alert-success">&#10003; Synapse established. Welcome, @{{ username }}.</div>
+  {% else %}
+  <div class="alert alert-error">&#10007; Authentication failed. Check your credentials.</div>
+  {% endif %}
+{% endif %}
+
+<div class="form-box">
+  <form method="post" action="/login">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="@handle" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" required>
+    </div>
+    <button type="submit" class="btn">Connect</button>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>// live feed</h2>
+
+<img src="/static/neuron.svg" alt="Neural network" class="neural-banner">
+
+{% if messages %}
+<div class="feed">
+  {% for msg in messages %}
+  <div class="card">
+    <div class="card-meta">
+      <span class="card-user">@{{ msg.username }}</span>
+      {% if msg.age is not none %}
+      <span class="card-age">age {{ msg.age }}</span>
+      {% endif %}
+      <span class="card-time">{{ msg.created_at }}</span>
+    </div>
+    <div class="card-body">{{ msg.message }}</div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">No signals detected. Be the first to transmit.</div>
+{% endif %}
+
+{% endblock %}

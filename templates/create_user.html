@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>// register new user</h2>
+
+{% if created %}
+<div class="alert alert-success">&#10003; Node @{{ new_username }} added to the network.</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<div class="form-box">
+  <form method="post" action="/create_user">
+    <div class="form-group">
+      <label for="new_username">Username</label>
+      <input type="text" id="new_username" name="new_username" placeholder="@handle" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" required>
+    </div>
+    <div class="form-group">
+      <label for="age">Age <span style="color:var(--muted)">(optional)</span></label>
+      <input type="number" id="age" name="age" placeholder="e.g. 21" min="1" max="150">
+    </div>
+    <button type="submit" class="btn btn-purple">Join Network</button>
+  </form>
+</div>
+
+{% endblock %}
