@@ -60,6 +60,7 @@ messages = [
     (6, 'SQL is the best!!',                                             None),
     (7, "I'm an adult",                                                  None),
     (7, "WTF is SQL?! I thought you liked the snake thing.",             None),
+    (7, 'It\'s called "Python", not the "snake thing"!',                None),
 ]
 for sender_id, msg, ts in messages:
     if ts:

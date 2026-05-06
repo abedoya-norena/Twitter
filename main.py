@@ -1,6 +1,6 @@
 import sqlite3
 from fastapi import FastAPI, Request, Form, Response
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -12,8 +12,9 @@ templates = Jinja2Templates(directory='templates')
 
 
 def get_db():
-    con = sqlite3.connect(DB)
+    con = sqlite3.connect(DB, timeout=10)
     con.row_factory = sqlite3.Row
+    con.execute('PRAGMA journal_mode=WAL')
     return con
 
 
@@ -53,14 +54,16 @@ def login_submit(request: Request, username: str = Form(...), password: str = Fo
 
     success = row is not None and row['password'] == password
 
-    resp = render(request, 'login.html', {
-        'username': username if success else None,
-        'tried': True,
-        'success': success,
-    })
     if success:
+        resp = RedirectResponse(url='/', status_code=303)
         resp.set_cookie('username', username)
-    return resp
+        return resp
+
+    return render(request, 'login.html', {
+        'username': None,
+        'tried': True,
+        'success': False,
+    })
 
 
 @app.get('/logout', response_class=HTMLResponse)
@@ -113,22 +116,31 @@ def create_user_form(request: Request):
 
 
 @app.post('/create_user', response_class=HTMLResponse)
-def create_user_submit(request: Request, new_username: str = Form(...), password: str = Form(...), age: str = Form('')):
+def create_user_submit(request: Request, new_username: str = Form(...), password: str = Form(...), password2: str = Form(...), age: str = Form('')):
     username = request.cookies.get('username')
     error = None
 
+    if password != password2:
+        error = 'Passwords do not match.'
+        return render(request, 'create_user.html', {
+            'username': username,
+            'created': False,
+            'error': error,
+            'new_username': new_username,
+        })
+
     age_val = int(age) if age.strip().isdigit() else None
+    con = get_db()
     try:
-        con = get_db()
-        cur = con.cursor()
-        cur.execute(
+        con.execute(
             'INSERT INTO users (username, password, age) VALUES (?, ?, ?)',
             [new_username, password, age_val]
         )
         con.commit()
-        con.close()
     except sqlite3.IntegrityError:
         error = f'Username "{new_username}" is already taken.'
+    finally:
+        con.close()
 
     return render(request, 'create_user.html', {
         'username': username,

@@ -12,12 +12,13 @@
   <h1>Neuro<span style="-webkit-text-fill-color:var(--cyan)">Pulse</span><span class="dot">▮</span></h1>
   <nav>
     <a href="/">Feed</a>
-    <a href="/login">Login</a>
-    <a href="/logout">Logout</a>
-    <a href="/create_message">Tweet</a>
-    <a href="/create_user">Register</a>
     {% if username %}
+    <a href="/create_message">Tweet</a>
+    <a href="/logout">Logout</a>
     <span class="session-badge">⬡ {{ username }}</span>
+    {% else %}
+    <a href="/login">Login</a>
+    <a href="/create_user">Register</a>
     {% endif %}
   </nav>
 </header>
