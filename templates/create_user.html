@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>// register new user</h2>
+<h2>{{ t.register_title }}</h2>
 
 {% if created %}
 <div class="alert alert-success">&#10003; Node @{{ new_username }} added to the network.</div>
@@ -14,22 +14,22 @@
 <div class="form-box">
   <form method="post" action="/create_user">
     <div class="form-group">
-      <label for="new_username">Username</label>
+      <label for="new_username">{{ t.lbl_username }}</label>
       <input type="text" id="new_username" name="new_username" placeholder="@handle" required>
     </div>
     <div class="form-group">
-      <label for="password">Password</label>
+      <label for="password">{{ t.lbl_password }}</label>
       <input type="password" id="password" name="password" placeholder="••••••••" required>
     </div>
     <div class="form-group">
-      <label for="password2">Confirm Password</label>
+      <label for="password2">{{ t.lbl_confirm_pw }}</label>
       <input type="password" id="password2" name="password2" placeholder="••••••••" required>
     </div>
     <div class="form-group">
-      <label for="age">Age <span style="color:var(--muted)">(optional)</span></label>
+      <label for="age">{{ t.lbl_age_optional }}</label>
       <input type="number" id="age" name="age" placeholder="e.g. 21" min="1" max="150">
     </div>
-    <button type="submit" class="btn btn-purple">Join Network</button>
+    <button type="submit" class="btn btn-purple">{{ t.btn_join }}</button>
   </form>
 </div>
 

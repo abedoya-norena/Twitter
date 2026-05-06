@@ -290,3 +290,247 @@ footer {
   padding: 3rem 1rem 1.5rem;
   letter-spacing: .12em;
 }
+
+/* nav search */
+.nav-search {
+  display: flex;
+  gap: .25rem;
+}
+.nav-search input {
+  background: #0a0a1f;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: .8rem;
+  padding: .3rem .6rem;
+  outline: none;
+  width: 140px;
+  transition: border-color .2s;
+}
+.nav-search input:focus { border-color: var(--cyan); }
+.nav-search button {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: .9rem;
+  padding: .3rem .6rem;
+  transition: color .2s, border-color .2s;
+}
+.nav-search button:hover { color: var(--cyan); border-color: var(--cyan); }
+
+/* card avatar */
+.card-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* card-meta with avatar */
+.card-meta {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+  margin-bottom: .6rem;
+  flex-wrap: nowrap;
+}
+.card-meta-text { flex: 1; min-width: 0; }
+.card-meta-top {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: .25rem;
+}
+
+/* edit / delete buttons on cards */
+.card-actions {
+  display: flex;
+  gap: .4rem;
+  margin-top: .3rem;
+}
+.btn-sm {
+  padding: .2rem .55rem;
+  font-size: .75rem;
+  letter-spacing: .05em;
+}
+.btn-danger {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+}
+.btn-danger:hover {
+  background: rgba(255,69,102,.12);
+  box-shadow: 0 0 10px rgba(255,69,102,.3);
+  color: #fff;
+}
+
+/* edited badge */
+.card-edited {
+  color: var(--muted);
+  font-size: .7rem;
+  font-style: italic;
+}
+
+/* pagination */
+.pagination {
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.pagination a, .pagination span {
+  padding: .35rem .8rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: .82rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s, border-color .2s;
+}
+.pagination a:hover { border-color: var(--cyan); color: var(--cyan); }
+.pagination .active { border-color: var(--cyan); color: var(--cyan); }
+
+/* @mention links */
+.card-body a, .profile-bio a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+.card-body a:hover { text-shadow: 0 0 8px var(--cyan); }
+
+/* markdown inside cards */
+.card-body p { margin-bottom: .4em; }
+.card-body p:last-child { margin-bottom: 0; }
+.card-body strong { color: var(--green); }
+.card-body em { color: var(--purple); font-style: italic; }
+.card-body h1, .card-body h2, .card-body h3 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--cyan);
+  margin: .5em 0 .25em;
+  font-size: .95rem;
+}
+.card-body code {
+  background: rgba(0,229,255,.08);
+  padding: .1em .35em;
+  border-radius: 3px;
+  font-size: .88em;
+}
+.card-body pre {
+  background: #0a0a1f;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: .75rem;
+  overflow-x: auto;
+  margin: .5em 0;
+}
+.card-body ul, .card-body ol {
+  padding-left: 1.4em;
+  margin: .3em 0;
+}
+
+/* profile page */
+.profile-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2px solid var(--cyan);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.profile-info h3 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--cyan);
+  font-size: 1rem;
+  margin-bottom: .4rem;
+}
+.profile-bio {
+  color: var(--text);
+  font-size: .88rem;
+  line-height: 1.5;
+  margin-top: .5rem;
+}
+
+/* language switcher */
+.lang-switcher {
+  display: flex;
+  gap: .25rem;
+  align-items: center;
+  margin-left: .25rem;
+  border-left: 1px solid var(--border);
+  padding-left: .5rem;
+}
+.lang-switcher a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: .75rem;
+  letter-spacing: .08em;
+  padding: .2rem .4rem;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  transition: color .2s, border-color .2s;
+}
+.lang-switcher a:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+.lang-active {
+  color: var(--cyan);
+  font-size: .75rem;
+  letter-spacing: .08em;
+  padding: .2rem .4rem;
+  border: 1px solid var(--cyan);
+  border-radius: 3px;
+}
+
+/* reply button */
+.btn-reply {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+.btn-reply:hover {
+  background: rgba(168,85,247,.12);
+  box-shadow: 0 0 10px rgba(168,85,247,.3);
+  color: #fff;
+}
+
+/* reply thread indentation */
+.reply-card {
+  margin-top: .6rem;
+}
+.reply-card::before {
+  background: linear-gradient(180deg, var(--purple), var(--pink));
+}
+
+/* reply form */
+.reply-form-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* search results */
+.search-meta {
+  color: var(--muted);
+  font-size: .82rem;
+  margin-bottom: 1.25rem;
+}

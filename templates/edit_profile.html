@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{{ t.edit_profile_title }}</h2>
+
+<div class="form-box">
+  <form method="post" action="/edit_profile">
+    <div class="form-group">
+      <label for="age">{{ t.lbl_age_optional }}</label>
+      <input type="number" id="age" name="age" value="{{ profile.age if profile.age else '' }}" placeholder="e.g. 21" min="1" max="150">
+    </div>
+    <div class="form-group">
+      <label for="bio">{{ t.lbl_bio }}</label>
+      <textarea id="bio" name="bio" placeholder="Tell the network about yourself...">{{ profile.bio if profile.bio else '' }}</textarea>
+    </div>
+    <button type="submit" class="btn">{{ t.btn_save_profile }}</button>
+    <a href="/user/{{ username }}" class="btn" style="margin-left:.5rem;">{{ t.btn_cancel }}</a>
+  </form>
+</div>
+
+{% endblock %}

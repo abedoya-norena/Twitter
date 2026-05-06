@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{{ t.thread_title }}</h2>
+
+{% macro render_card(m, depth) %}
+<div class="card reply-card" style="{% if depth > 0 %}margin-left:{{ [depth * 28, 140] | min }}px; border-left-color:{% if depth % 3 == 1 %}var(--purple){% elif depth % 3 == 2 %}var(--green){% else %}var(--cyan){% endif %};{% endif %}">
+  <div class="card-meta">
+    <a href="/user/{{ m.username }}">
+      <img src="https://robohash.org/{{ m.username }}?size=42x42&set=set4" class="card-avatar" alt="{{ m.username }}">
+    </a>
+    <div class="card-meta-text">
+      <div class="card-meta-top">
+        <a href="/user/{{ m.username }}" class="card-user">@{{ m.username }}</a>
+        {% if m.age is not none %}
+        <span class="card-age">{{ t.age_label }} {{ m.age }}</span>
+        {% endif %}
+        <span class="card-time">{{ m.created_at }}</span>
+        {% if m.edited_at %}
+        <span class="card-edited">{{ t.edited_label }} {{ m.edited_at }}</span>
+        {% endif %}
+      </div>
+      <div class="card-actions">
+        {% if username == m.username %}
+        <a href="/edit_message/{{ m.id }}" class="btn btn-sm">{{ t.btn_edit }}</a>
+        <form method="post" action="/delete_message/{{ m.id }}" style="display:inline">
+          <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('{{ t.confirm_delete_msg }}')">{{ t.btn_delete }}</button>
+        </form>
+        {% endif %}
+        <a href="/message/{{ m.id }}" class="btn btn-sm btn-reply">{{ t.reply_label }}{% if m.reply_count %} · {{ m.reply_count }}{% endif %}</a>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">{{ m.message_html | safe }}</div>
+</div>
+{% if m.replies %}
+  {% for child in m.replies %}
+    {{ render_card(child, depth + 1) }}
+  {% endfor %}
+{% endif %}
+{% endmacro %}
+
+<div class="feed">
+  {{ render_card(msg, 0) }}
+</div>
+
+{% if username %}
+<div class="reply-form-box">
+  <form method="post" action="/reply/{{ msg.id }}">
+    <div class="form-group">
+      <label for="reply_msg">{{ t.write_reply }}</label>
+      <textarea id="reply_msg" name="message" placeholder="{{ t.write_reply }}" required></textarea>
+    </div>
+    <button type="submit" class="btn">{{ t.btn_post_reply }}</button>
+    <a href="/" class="btn" style="margin-left:.5rem;">{{ t.btn_cancel }}</a>
+  </form>
+</div>
+{% else %}
+<div class="alert alert-info" style="margin-top:1.5rem;">
+  <a href="/login" style="color:var(--cyan)">{{ t.nav_login }}</a> to reply.
+</div>
+{% endif %}
+
+{% endblock %}

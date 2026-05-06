@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{{ t.edit_msg_title }}</h2>
+
+<div class="form-box">
+  <form method="post" action="/edit_message/{{ msg.id }}">
+    <div class="form-group">
+      <label for="message">Message <span style="color:var(--muted)">{{ t.lbl_message_edit_hint }}</span></label>
+      <textarea id="message" name="message" required>{{ msg.message }}</textarea>
+    </div>
+    <button type="submit" class="btn">{{ t.btn_save }}</button>
+    <a href="/" class="btn" style="margin-left:.5rem;">{{ t.btn_cancel }}</a>
+  </form>
+</div>
+
+{% endblock %}

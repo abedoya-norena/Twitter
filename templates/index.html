@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>// live feed</h2>
+<h2>{{ t.feed_title }}</h2>
 
 <img src="/static/neuron.svg" alt="Neural network" class="neural-banner">
 
@@ -10,18 +10,48 @@
   {% for msg in messages %}
   <div class="card">
     <div class="card-meta">
-      <span class="card-user">@{{ msg.username }}</span>
-      {% if msg.age is not none %}
-      <span class="card-age">age {{ msg.age }}</span>
-      {% endif %}
-      <span class="card-time">{{ msg.created_at }}</span>
+      <a href="/user/{{ msg.username }}">
+        <img src="https://robohash.org/{{ msg.username }}?size=42x42&set=set4" class="card-avatar" alt="{{ msg.username }}">
+      </a>
+      <div class="card-meta-text">
+        <div class="card-meta-top">
+          <a href="/user/{{ msg.username }}" class="card-user">@{{ msg.username }}</a>
+          {% if msg.age is not none %}
+          <span class="card-age">{{ t.age_label }} {{ msg.age }}</span>
+          {% endif %}
+          <span class="card-time">{{ msg.created_at }}</span>
+          {% if msg.edited_at %}
+          <span class="card-edited">{{ t.edited_label }} {{ msg.edited_at }}</span>
+          {% endif %}
+        </div>
+        <div class="card-actions">
+          {% if username == msg.username %}
+          <a href="/edit_message/{{ msg.id }}" class="btn btn-sm">{{ t.btn_edit }}</a>
+          <form method="post" action="/delete_message/{{ msg.id }}" style="display:inline">
+            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('{{ t.confirm_delete_msg }}')">{{ t.btn_delete }}</button>
+          </form>
+          {% endif %}
+          <a href="/message/{{ msg.id }}" class="btn btn-sm btn-reply">{{ t.btn_reply }}{% if msg.reply_count %} · {{ msg.reply_count }} {{ t.replies_label }}{% endif %}</a>
+        </div>
+      </div>
     </div>
-    <div class="card-body">{{ msg.message }}</div>
+    <div class="card-body">{{ msg.message_html | safe }}</div>
   </div>
   {% endfor %}
 </div>
+
+<div class="pagination">
+  {% if page > 1 %}
+  <a href="/?page={{ page - 1 }}">{{ t.newer }}</a>
+  {% endif %}
+  <span class="active">{{ t.page_label }} {{ page }} {{ t.of_label }} {{ total_pages }}</span>
+  {% if page < total_pages %}
+  <a href="/?page={{ page + 1 }}">{{ t.older }}</a>
+  {% endif %}
+</div>
+
 {% else %}
-<div class="alert alert-info">No signals detected. Be the first to transmit.</div>
+<div class="alert alert-info">{{ t.no_messages }}</div>
 {% endif %}
 
 {% endblock %}

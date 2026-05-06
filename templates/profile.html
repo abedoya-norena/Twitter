@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if not profile %}
+<div class="alert alert-error">{{ t.no_profile }}</div>
+{% else %}
+
+<h2>{{ t.profile_title }}</h2>
+
+<div class="profile-header">
+  <img src="https://robohash.org/{{ profile.username }}?size=96x96&set=set4" class="profile-avatar" alt="{{ profile.username }}">
+  <div class="profile-info">
+    <h3>@{{ profile.username }}</h3>
+    {% if profile.age is not none %}
+    <div class="card-age">{{ t.age_label | capitalize }} {{ profile.age }}</div>
+    {% endif %}
+    {% if profile.bio %}
+    <div class="profile-bio">{{ profile.bio }}</div>
+    {% endif %}
+    {% if username == profile.username %}
+    <div style="margin-top:.75rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+      <a href="/edit_profile" class="btn btn-sm">{{ t.btn_edit_profile }}</a>
+      <a href="/change_password" class="btn btn-sm">{{ t.btn_change_pw }}</a>
+      <form method="post" action="/delete_user" style="display:inline">
+        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('{{ t.confirm_delete_account }}')">{{ t.btn_delete_account }}</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<h2>{{ t.msg_by_label }} @{{ profile.username }}</h2>
+
+{% if messages %}
+<div class="feed">
+  {% for msg in messages %}
+  <div class="card">
+    <div class="card-meta">
+      <div class="card-meta-text">
+        <div class="card-meta-top">
+          <span class="card-time">{{ msg.created_at }}</span>
+          {% if msg.edited_at %}
+          <span class="card-edited">{{ t.edited_label }} {{ msg.edited_at }}</span>
+          {% endif %}
+        </div>
+        <div class="card-actions">
+          {% if username == profile.username %}
+          <a href="/edit_message/{{ msg.id }}" class="btn btn-sm">{{ t.btn_edit }}</a>
+          <form method="post" action="/delete_message/{{ msg.id }}" style="display:inline">
+            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('{{ t.confirm_delete_msg }}')">{{ t.btn_delete }}</button>
+          </form>
+          {% endif %}
+          <a href="/message/{{ msg.id }}" class="btn btn-sm btn-reply">{{ t.btn_reply }}{% if msg.reply_count %} · {{ msg.reply_count }} {{ t.replies_label }}{% endif %}</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">{{ msg.message_html | safe }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="pagination">
+  {% if page > 1 %}
+  <a href="/user/{{ profile.username }}?page={{ page - 1 }}">{{ t.newer }}</a>
+  {% endif %}
+  <span class="active">{{ t.page_label }} {{ page }} {{ t.of_label }} {{ total_pages }}</span>
+  {% if page < total_pages %}
+  <a href="/user/{{ profile.username }}?page={{ page + 1 }}">{{ t.older }}</a>
+  {% endif %}
+</div>
+
+{% else %}
+<div class="alert alert-info">{{ t.no_user_messages }}</div>
+{% endif %}
+
+{% endif %}
+
+{% endblock %}

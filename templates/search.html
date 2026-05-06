@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>{{ t.search_title }}</h2>
+
+<div class="form-box" style="max-width:100%; margin-bottom:1.5rem;">
+  <form method="get" action="/search">
+    <div class="form-group" style="flex-direction:row; align-items:center; gap:.75rem;">
+      <input type="text" name="q" value="{{ q }}" placeholder="Search messages or users..." style="flex:1" autofocus>
+      <button type="submit" class="btn">{{ t.btn_search }}</button>
+    </div>
+  </form>
+</div>
+
+{% if q %}
+  {% if messages %}
+  <p class="search-meta">{{ t.search_results_prefix }} "{{ q }}"</p>
+  <div class="feed">
+    {% for msg in messages %}
+    <div class="card">
+      <div class="card-meta">
+        <a href="/user/{{ msg.username }}">
+          <img src="https://robohash.org/{{ msg.username }}?size=42x42&set=set4" class="card-avatar" alt="{{ msg.username }}">
+        </a>
+        <div class="card-meta-text">
+          <div class="card-meta-top">
+            <a href="/user/{{ msg.username }}" class="card-user">@{{ msg.username }}</a>
+            {% if msg.age is not none %}
+            <span class="card-age">{{ t.age_label }} {{ msg.age }}</span>
+            {% endif %}
+            <span class="card-time">{{ msg.created_at }}</span>
+            {% if msg.edited_at %}
+            <span class="card-edited">{{ t.edited_label }} {{ msg.edited_at }}</span>
+            {% endif %}
+          </div>
+          <div class="card-actions">
+            {% if username == msg.username %}
+            <a href="/edit_message/{{ msg.id }}" class="btn btn-sm">{{ t.btn_edit }}</a>
+            <form method="post" action="/delete_message/{{ msg.id }}" style="display:inline">
+              <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('{{ t.confirm_delete_msg }}')">{{ t.btn_delete }}</button>
+            </form>
+            {% endif %}
+            <a href="/message/{{ msg.id }}" class="btn btn-sm btn-reply">{{ t.btn_reply }}{% if msg.reply_count %} · {{ msg.reply_count }} {{ t.replies_label }}{% endif %}</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">{{ msg.message_html | safe }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="pagination">
+    {% if page > 1 %}
+    <a href="/search?q={{ q }}&page={{ page - 1 }}">{{ t.prev }}</a>
+    {% endif %}
+    <span class="active">{{ t.page_label }} {{ page }} {{ t.of_label }} {{ total_pages }}</span>
+    {% if page < total_pages %}
+    <a href="/search?q={{ q }}&page={{ page + 1 }}">{{ t.next_label }}</a>
+    {% endif %}
+  </div>
+
+  {% else %}
+  <div class="alert alert-info">{{ t.no_results }}</div>
+  {% endif %}
+{% endif %}
+
+{% endblock %}

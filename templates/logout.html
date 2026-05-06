@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h2>// logout</h2>
+<h2>{{ t.logout_title }}</h2>
 
-<div class="alert alert-info">Synapse disconnected. You have been logged out.</div>
+<div class="alert alert-info">{{ t.logout_msg }}</div>
 
-<a href="/login" class="btn">Reconnect</a>
+<a href="/login" class="btn">{{ t.btn_reconnect }}</a>
 
 {% endblock %}

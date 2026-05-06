@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,15 +11,24 @@
 <header>
   <h1>Neuro<span style="-webkit-text-fill-color:var(--cyan)">Pulse</span><span class="dot">▮</span></h1>
   <nav>
-    <a href="/">Feed</a>
+    <a href="/">{{ t.nav_feed }}</a>
+    <form method="get" action="/search" class="nav-search">
+      <input name="q" placeholder="{{ t.nav_search_placeholder }}" autocomplete="off">
+      <button type="submit">⌕</button>
+    </form>
     {% if username %}
-    <a href="/create_message">Tweet</a>
-    <a href="/logout">Logout</a>
-    <span class="session-badge">⬡ {{ username }}</span>
+    <a href="/create_message">{{ t.nav_tweet }}</a>
+    <a href="/user/{{ username }}" class="session-badge">⬡ {{ username }}</a>
+    <a href="/logout">{{ t.nav_logout }}</a>
     {% else %}
-    <a href="/login">Login</a>
-    <a href="/create_user">Register</a>
+    <a href="/login">{{ t.nav_login }}</a>
+    <a href="/create_user">{{ t.nav_register }}</a>
     {% endif %}
+    <span class="lang-switcher">
+      {% if lang != 'en' %}<a href="/set_lang?lang=en&next={{ request.url.path }}">EN</a>{% else %}<span class="lang-active">EN</span>{% endif %}
+      {% if lang != 'es' %}<a href="/set_lang?lang=es&next={{ request.url.path }}">ES</a>{% else %}<span class="lang-active">ES</span>{% endif %}
+      {% if lang != 'fr' %}<a href="/set_lang?lang=fr&next={{ request.url.path }}">FR</a>{% else %}<span class="lang-active">FR</span>{% endif %}
+    </span>
   </nav>
 </header>
 
@@ -27,7 +36,7 @@
   {% block content %}{% endblock %}
 </main>
 
-<footer>NeuroPulse &mdash; synaptic social network &mdash; nodes online</footer>
+<footer>{{ t.footer }}</footer>
 
 </body>
 </html>
