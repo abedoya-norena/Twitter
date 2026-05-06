@@ -1,10 +1,10 @@
 # NeuroPulse
 
-![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=flat-square&logo=fastapi&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=flat-square&logo=sqlite&logoColor=white)
-![Jinja2](https://img.shields.io/badge/Jinja2-3.x-B41717?style=flat-square&logo=jinja&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-63%20passing-brightgreen?style=flat-square)
+[![Tests](https://github.com/abedoya-norena/Twitter/actions/workflows/tests.yml/badge.svg)](https://github.com/abedoya-norena/Twitter/actions/workflows/tests.yml)
+[![Python](https://img.shields.io/badge/python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/pypi/v/fastapi?style=flat-square&logo=fastapi&logoColor=white&label=FastAPI&color=009688)](https://pypi.org/project/fastapi/)
+[![Jinja2](https://img.shields.io/pypi/v/jinja2?style=flat-square&label=Jinja2&color=B41717)](https://pypi.org/project/Jinja2/)
+[![markdown2](https://img.shields.io/pypi/v/markdown2?style=flat-square&label=markdown2&color=555)](https://pypi.org/project/markdown2/)
 ![i18n](https://img.shields.io/badge/i18n-EN%20%7C%20ES%20%7C%20FR-blueviolet?style=flat-square)
 
 A decision-neuroscience themed Twitter clone. The feed is filled with fMRI papers, lab struggles, and vmPFC hot takes from 200 simulated researchers.
@@ -64,6 +64,7 @@ Open **http://127.0.0.1:8000**
 All test files live in `tests/`. Run them from the **project root**:
 
 ```bash
+python tests/test_check.py       # 8  smoke checks
 python tests/test_all.py         # 19 feature checks
 python tests/test_security.py    # 9  security checks (SQL injection, XSS, auth bypass)
 python tests/test_integration.py # 35 full-journey checks
@@ -72,8 +73,10 @@ python tests/test_integration.py # 35 full-journey checks
 Or run the full suite at once:
 
 ```bash
-python tests/test_all.py && python tests/test_security.py && python tests/test_integration.py
+python tests/test_check.py && python tests/test_all.py && python tests/test_security.py && python tests/test_integration.py
 ```
+
+Tests also run automatically on every push via **GitHub Actions** — see the badge at the top.
 
 ---
 
@@ -87,6 +90,9 @@ NeuroPulse/
 ├── requirements.txt
 ├── twitter_clone.db     # SQLite database (generated — not committed)
 ├── Neuro_Image.png      # Screenshot for README
+├── .github/
+│   └── workflows/
+│       └── tests.yml    # GitHub Actions CI — runs all tests on push
 ├── static/
 │   ├── style.css        # fMRI activation-map colour theme
 │   └── neuron.svg       # Axial brain-scan SVG banner
@@ -104,6 +110,7 @@ NeuroPulse/
 │   ├── edit_profile.html
 │   └── change_password.html
 └── tests/
+    ├── test_check.py        # Smoke tests  (8 checks)
     ├── test_all.py          # Feature tests (19 checks)
     ├── test_security.py     # Security tests  (9 checks)
     └── test_integration.py  # Integration tests (35 checks)
