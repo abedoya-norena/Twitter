@@ -49,7 +49,7 @@ TWITTER/
 
 ## Screenshot
 
-![NeuroPulse feed](screenshot.png)
+![NeuroPulse feed](Neuro_Image.png)
 
 ## Demo credentials
 
